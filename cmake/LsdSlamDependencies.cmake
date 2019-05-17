@@ -47,8 +47,7 @@ if(G2O_SOLVER_CSPARSE AND NOT APPLE)
     list(APPEND G2O_INCLUDE_DIR "/usr/include/suitesparse")
   endif()
   list(APPEND G2O_LIBRARIES ${G2O_SOLVER_CSPARSE}
-                            ${G2O_SOLVER_CSPARSE_EXTENSION}
-                            ${G2O_EXT_CSPARSE})
+                            ${G2O_SOLVER_CSPARSE_EXTENSION})
   add_definitions(-DHAVE_SOLVER_CSPARSE)
 endif()
 if(G2O_SOLVER_CHOLMOD)
