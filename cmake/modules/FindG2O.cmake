@@ -19,54 +19,13 @@ FIND_PATH(G2O_INCLUDE_DIR g2o/core/base_vertex.h
 # macro.
 
 MACRO(FIND_G2O_LIBRARY MYLIBRARY MYLIBRARYNAME)
-
-  FIND_LIBRARY("${MYLIBRARY}_DEBUG"
-    NAMES "g2o_${MYLIBRARYNAME}_d"
-    PATHS
-    ${G2O_ROOT}/lib/Debug
-    ${G2O_ROOT}/lib
-    $ENV{G2O_ROOT}/lib/Debug
-    $ENV{G2O_ROOT}/lib
-    NO_DEFAULT_PATH
-    )
-
-  FIND_LIBRARY("${MYLIBRARY}_DEBUG"
-    NAMES "g2o_${MYLIBRARYNAME}_d"
-    PATHS
-    ~/Library/Frameworks
-    /Library/Frameworks
-    /usr/local/lib
-    /usr/local/lib64
-    /usr/lib
-    /usr/lib64
-    /opt/local/lib
-    /sw/local/lib
-    /sw/lib
-    )
+  FIND_LIBRARY(${MYLIBRARY}_DEBUG
+               NAMES "g2o_${MYLIBRARYNAME}_d"
+               HINTS /usr/local/lib /usr/lib)
 
   FIND_LIBRARY(${MYLIBRARY}
-    NAMES "g2o_${MYLIBRARYNAME}"
-    PATHS
-    ${G2O_ROOT}/lib/Release
-    ${G2O_ROOT}/lib
-    $ENV{G2O_ROOT}/lib/Release
-    $ENV{G2O_ROOT}/lib
-    NO_DEFAULT_PATH
-    )
-
-  FIND_LIBRARY(${MYLIBRARY}
-    NAMES "g2o_${MYLIBRARYNAME}"
-    PATHS
-    ~/Library/Frameworks
-    /Library/Frameworks
-    /usr/local/lib
-    /usr/local/lib64
-    /usr/lib
-    /usr/lib64
-    /opt/local/lib
-    /sw/local/lib
-    /sw/lib
-    )
+               NAMES "g2o_${MYLIBRARYNAME}"
+               HINTS /usr/local/lib /usr/lib)
 
   IF(NOT ${MYLIBRARY}_DEBUG)
     IF(${MYLIBRARY})
