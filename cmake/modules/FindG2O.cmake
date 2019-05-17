@@ -5,6 +5,8 @@ FIND_PATH(G2O_INCLUDE_DIR g2o/core/base_vertex.h
   /usr/include
   )
 
+message(STATUS "G2O_INCLUDE_DIR=${G2O_INCLUDE_DIR}")
+
 # Macro to unify finding both the debug and release versions of the
 # libraries; this is adapted from the OpenSceneGraph FIND_LIBRARY
 # macro.
