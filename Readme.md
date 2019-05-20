@@ -26,7 +26,12 @@ On Mac, make sure the latest [XQuartz](https://www.xquartz.org) is installed, an
 
 ### Download the dataset
 
-Download the TUM dataset sequence by running `$./scripts/download_tum_mono.sh`. 
+Download the TUM dataset sequence by running
+
+```
+$export SEQUENCE=30  # sequence number of the TUM-mono dataset 
+$./scripts/download_tum_mono.sh
+```
 
 ### Run LSD-SLAM
 

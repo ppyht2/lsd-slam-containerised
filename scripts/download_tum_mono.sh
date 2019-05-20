@@ -1,4 +1,10 @@
-SEQUENCE=30
+#!/bin/bash
+
+if [ -z "$SEQUENCE" ]
+then
+    echo "Set \$export SEQUENCE=<dataset sequence number> before running"
+    exit
+fi
 
 apt install wget zip  # Assume this is on a docker container
 
