@@ -2,7 +2,7 @@
 * This file is part of LSD-SLAM.
 *
 * Copyright 2013 Jakob Engel <engelj at in dot tum dot de> (Technical University of Munich)
-* For more information see <http://vision.in.tum.de/lsdslam> 
+* For more information see <http://vision.in.tum.de/lsdslam>
 *
 * LSD-SLAM is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ class UndistorterPTAM : public Undistorter
 public:
 	/**
 	 * Creates an Undistorter by reading the distortion parameters from a file.
-	 * 
+	 *
 	 * The file format is as follows:
 	 * d1 d2 d3 d4 d5
 	 * inputWidth inputHeight
@@ -83,49 +83,49 @@ public:
 	 * outputWidth outputHeight
 	 */
 	UndistorterPTAM(const char* configFileName);
-	
+
 	/**
 	 * Destructor.
 	 */
 	~UndistorterPTAM();
-	
+
 	UndistorterPTAM(const UndistorterPTAM&) = delete;
 	UndistorterPTAM& operator=(const UndistorterPTAM&) = delete;
-	
+
 	/**
 	 * Undistorts the given image and returns the result image.
 	 */
 	void undistort(const cv::Mat& image, cv::OutputArray result) const;
-	
+
 	/**
 	 * Returns the intrinsic parameter matrix of the undistorted images.
 	 */
 	const cv::Mat& getK() const;
-	
+
 	/**
 	 * Returns the intrinsic parameter matrix of the original images,
 	 */
 	const cv::Mat& getOriginalK() const;
-	
+
 	/**
 	 * Returns the width of the undistorted images in pixels.
 	 */
 	int getOutputWidth() const;
-	
+
 	/**
 	 * Returns the height of the undistorted images in pixels.
 	 */
 	int getOutputHeight() const;
-	
+
 	/**
 	 * Returns if the undistorter was initialized successfully.
 	 */
 	bool isValid() const;
-	
+
 private:
 	cv::Mat K_;
 	cv::Mat originalK_;
-	
+
 	float inputCalibration[5];
 	float outputCalibration[5];
 	int out_width, out_height;
@@ -133,7 +133,7 @@ private:
 	float* remapX;
 	float* remapY;
 
-	
+
 	/// Is true if the undistorter object is valid (has been initialized with
 	/// a valid configuration)
 	bool valid;
@@ -144,7 +144,7 @@ class UndistorterOpenCV : public Undistorter
 public:
 	/**
 	 * Creates an Undistorter by reading the distortion parameters from a file.
-	 * 
+	 *
 	 * The file format is as follows:
 	 * fx fy cx cy d1 d2 d3 d4 d5 d6
 	 * inputWidth inputHeight
@@ -152,55 +152,55 @@ public:
 	 * outputWidth outputHeight
 	 */
 	UndistorterOpenCV(const char* configFileName);
-	
+
 	/**
 	 * Destructor.
 	 */
 	~UndistorterOpenCV();
-	
+
 	UndistorterOpenCV(const UndistorterOpenCV&) = delete;
 	UndistorterOpenCV& operator=(const UndistorterOpenCV&) = delete;
-	
+
 	/**
 	 * Undistorts the given image and returns the result image.
 	 */
 	void undistort(const cv::Mat& image, cv::OutputArray result) const;
-	
+
 	/**
 	 * Returns the intrinsic parameter matrix of the undistorted images.
 	 */
 	const cv::Mat& getK() const;
-	
+
 	/**
 	 * Returns the intrinsic parameter matrix of the original images,
 	 */
 	const cv::Mat& getOriginalK() const;
-	
+
 	/**
 	 * Returns the width of the undistorted images in pixels.
 	 */
 	int getOutputWidth() const;
-	
+
 	/**
 	 * Returns the height of the undistorted images in pixels.
 	 */
 	int getOutputHeight() const;
-	
+
 	/**
 	 * Returns if the undistorter was initialized successfully.
 	 */
 	bool isValid() const;
-	
+
 private:
 	cv::Mat K_;
 	cv::Mat originalK_;
-	
+
 	float inputCalibration[10];
 	float outputCalibration;
 	int out_width, out_height;
 	int in_width, in_height;
 	cv::Mat map1, map2;
-	
+
 	/// Is true if the undistorter object is valid (has been initialized with
 	/// a valid configuration)
 	bool valid;

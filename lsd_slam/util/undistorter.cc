@@ -2,7 +2,7 @@
 * This file is part of LSD-SLAM.
 *
 * Copyright 2013 Jakob Engel <engelj at in dot tum dot de> (Technical University of Munich)
-* For more information see <http://vision.in.tum.de/lsdslam> 
+* For more information see <http://vision.in.tum.de/lsdslam>
 *
 * LSD-SLAM is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -76,8 +76,8 @@ UndistorterPTAM::UndistorterPTAM(const char* configFileName)
 	remapX = nullptr;
 	remapY = nullptr;
 
-	
-	
+
+
 	// read parameters
 	std::ifstream infile(configFileName);
 	assert(infile.good());
@@ -159,7 +159,7 @@ UndistorterPTAM::UndistorterPTAM(const char* configFileName)
 		float fy = inputCalibration[1] * in_height;
 		float cx = inputCalibration[2] * in_width - 0.5;
 		float cy = inputCalibration[3] * in_height - 0.5;
-		
+
 		// scale calibration parameters to input size
 		double xfactor = in_width / (1.0 * in_width);
 		double yfactor = in_height / (1.0 * in_height);
@@ -309,7 +309,7 @@ UndistorterPTAM::UndistorterPTAM(const char* configFileName)
 		out_height = in_height;
 	}
 
-	
+
 	originalK_ = cv::Mat(3, 3, CV_64F, cv::Scalar(0));
 	originalK_.at<double>(0, 0) = inputCalibration[0];
 	originalK_.at<double>(1, 1) = inputCalibration[1];
@@ -340,26 +340,26 @@ void UndistorterPTAM::undistort(const cv::Mat& image, cv::OutputArray result) co
 		result.getMatRef() = image;
 		return;
 	}
-	
+
 	if (image.rows != in_height || image.cols != in_width)
 	{
 		printf("UndistorterPTAM: input image size differs from expected input size! Not undistorting.\n");
 		result.getMatRef() = image;
 		return;
 	}
-	
+
 	if (in_height == out_height && in_width == out_width && inputCalibration[4] == 0)
 	{
 		// No transformation if neither distortion nor resize
 		result.getMatRef() = image;
 		return;
 	}
-	
+
 	result.create(out_height, out_width, CV_8U);
 	cv::Mat resultMat = result.getMatRef();
 	assert(result.getMatRef().isContinuous());
 	assert(image.isContinuous());
-	
+
 	uchar* data = resultMat.data;
 
 	for(int idx = out_width*out_height-1;idx>=0;idx--)
@@ -420,7 +420,7 @@ bool UndistorterPTAM::isValid() const
 UndistorterOpenCV::UndistorterOpenCV(const char* configFileName)
 {
 	valid = true;
-	
+
 	// read parameters
 	std::ifstream infile(configFileName);
 	assert(infile.good());
@@ -428,7 +428,7 @@ UndistorterOpenCV::UndistorterOpenCV(const char* configFileName)
 	cv::Mat camera_matrix;
 	cv::Mat distortion_coefficients;
 	int img_width, img_height;
-	
+
 	cv::FileStorage fs(configFileName, cv::FileStorage::READ);
 	fs["Camera_Matrix"] >> camera_matrix;
 	fs["Distortion_Coefficients"] >> distortion_coefficients;
@@ -438,8 +438,8 @@ UndistorterOpenCV::UndistorterOpenCV(const char* configFileName)
 	out_height = img_height;
 	fs.release();
 	cv::Size new_img_size(out_width, out_height);
-	
-	outputCalibration = 1; // [0..1] 
+
+	outputCalibration = 1; // [0..1]
 	K_ = cv::getOptimalNewCameraMatrix(camera_matrix, distortion_coefficients, cv::Size(img_width, img_height), outputCalibration, new_img_size, nullptr, false);
 	cv::initUndistortRectifyMap(camera_matrix, distortion_coefficients, cv::Mat(), K_, new_img_size, CV_16SC2, map1, map2);
 
@@ -501,13 +501,13 @@ UndistorterOpenCV::UndistorterOpenCV(const char* configFileName)
 //		printf("Out: Failed to Read Output resolution... not rectifying.\n");
 //		valid = false;
 //	}
-//	
+//
 //	cv::Mat distCoeffs = cv::Mat::zeros(8, 1, CV_32F);
 //	for (int i = 0; i < 2; ++ i)
 //		distCoeffs.at<float>(i, 0) = inputCalibration[4 + i];
 //	for (int i = 0; i < 4; ++ i)
 //		distCoeffs.at<float>(4 + i, 0) = inputCalibration[6 + i];
-//	
+//
 //	originalK_ = cv::Mat(3, 3, CV_64F, cv::Scalar(0));
 //	originalK_.at<double>(0, 0) = inputCalibration[0] * in_width;
 //	originalK_.at<double>(1, 1) = inputCalibration[1] * in_height;
@@ -518,10 +518,10 @@ UndistorterOpenCV::UndistorterOpenCV(const char* configFileName)
 //	if (valid)
 //	{
 //		K_ = cv::getOptimalNewCameraMatrix(originalK_, distCoeffs, cv::Size(in_width, in_height), (outputCalibration == -2) ? 1 : 0, cv::Size(out_width, out_height), nullptr, false);
-//		
+//
 //		cv::initUndistortRectifyMap(originalK_, distCoeffs, cv::Mat(), K_,
 //				cv::Size(out_width, out_height), CV_16SC2, map1, map2);
-//		
+//
 //// 		K_.at<double>(0, 0) /= out_width;
 //// 		K_.at<double>(0, 2) /= out_width;
 //// 		K_.at<double>(1, 1) /= out_height;
@@ -529,13 +529,13 @@ UndistorterOpenCV::UndistorterOpenCV(const char* configFileName)
 //		// TODO: PTAM code uses the following, should here also 0.5 be subtracted?
 //// 		K_.at<double>(2, 0) = outputCalibration[2] * out_width - 0.5;
 //// 		K_.at<double>(2, 1) = outputCalibration[3] * out_height - 0.5;
-//		
+//
 //		originalK_.at<double>(0, 0) /= in_width;
 //		originalK_.at<double>(0, 2) /= in_width;
 //		originalK_.at<double>(1, 1) /= in_height;
 //		originalK_.at<double>(1, 2) /= in_height;
 //	}
-//	
+//
 	originalK_ = camera_matrix.t();
 	K_ = K_.t();
 }
