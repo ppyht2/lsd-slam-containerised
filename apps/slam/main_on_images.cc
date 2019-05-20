@@ -2,7 +2,7 @@
 * This file is part of LSD-SLAM.
 *
 * Copyright 2013 Jakob Engel <engelj at in dot tum dot de> (Technical University of Munich)
-* For more information see <http://vision.in.tum.de/lsdslam> 
+* For more information see <http://vision.in.tum.de/lsdslam>
 *
 * LSD-SLAM is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,9 @@
 #include "opencv2/opencv.hpp"
 
 
+const std::string dataset_root = "/workspace/lsd_slam_noros/data/sequence_01/";
+const std::string fn = dataset_root + "camera.txt";
+const std::string source = dataset_root + "images/";
 
 // Gets current projection matrix (= PerspectiveMatrix * CameraPoseMatrix)
 template<typename Tracker>
@@ -181,22 +184,12 @@ int main( int argc, char** argv )
 	//dynamic_reconfigure::Server<lsd_slam_core::LSDDebugParamsConfig> srvDebug(ros::NodeHandle("~Debug"));
 	//srvDebug.setCallback(dynConfCbDebug);
 
-	//packagePath = ros::package::getPath("lsd_slam_core")+"/";
-
-
-
 	// get camera calibration in form of an undistorter object.
 	// if no undistortion is required, the undistorter will just pass images through.
-	std::string calibFile;
+	// std::string calibFile;
 	Undistorter* undistorter = 0;
-	/*if(ros::param::get("~calib", calibFile))
-	{
-		 undistorter = Undistorter::getUndistorterForFile(calibFile.c_str());
-		 ros::param::del("~calib");
-	}*/
 
-  const std::string fn = "C:/Users/Thanh/dev/bb_lsd_slam/data/OpenCV_example_calib.cfg";
-  undistorter = Undistorter::getUndistorterForFile(fn.c_str());
+    undistorter = Undistorter::getUndistorterForFile(fn);
 
 	if(undistorter == 0)
 	{
@@ -222,55 +215,12 @@ int main( int argc, char** argv )
 	SlamSystem* system = new SlamSystem(w, h, K, doSlam);
 	system->setVisualization(outputWrapper);
 
-
-
-	// // open image files: first try to open as file.
-	// std::string source;
-	// std::vector<std::string> files;
-	// if(!ros::param::get("~files", source))
-	// {
-	// 	printf("need source files! (set using _files:=FOLDER)\n");
-	// 	exit(0);
-	// }
-	// ros::param::del("~files");
-
-
-	// if(getdir(source, files) >= 0)
-	// {
-	// 	printf("found %d image files in folder %s!\n", (int)files.size(), source.c_str());
-	// }
-	// else if(getFile(source, files) >= 0)
-	// {
-	// 	printf("found %d image files in file %s!\n", (int)files.size(), source.c_str());
-	// }
-	// else
-	// {
-	// 	printf("could not load file list! wrong path / file?\n");
-	// }
-
-	const std::string filename = "C:/Users/Thanh/dev/bb_lsd_slam/data/plane_sequence/fusion_recorder.txt";
-	std::ifstream ifs(filename);
-	if (ifs.fail()) {
-		printf("Fail to read file:%s\n", filename.c_str());
-		return -1;
-	}
-
-	std::vector<std::string> files;
-	while (!ifs.eof()) {
-		std::string tag;
-		double time;
-		std::string fn;
-		ifs >> tag >> time >> fn;
-		files.push_back(fn);
-		printf("frame:%s\n", fn.c_str());
-	}
-
-	//// get HZ
-	//double hz = 0;
-	//if(!ros::param::get("~hz", hz))
-	//	hz = 0;
-	//ros::param::del("~hz");
-
+    std::vector<std::string> files;
+	if(getdir(source, files) >= 0) {
+		printf("found %d image files in folder %s!\n", (int)files.size(), source.c_str());
+	} else {
+        throw std::runtime_error("Could not read the image directory");
+    }
 
 
 	cv::Mat image = cv::Mat(h,w,CV_8U);
@@ -281,18 +231,10 @@ int main( int argc, char** argv )
 
 	for(unsigned int i=0;i<files.size();i++)
 	{
+        std::cout << "reading " << files[i] << std::endl;
+
 		cv::Mat imageDist = cv::imread(files[i], CV_LOAD_IMAGE_GRAYSCALE);
 
-		if(imageDist.rows != h || imageDist.cols != w)
-		{
-			if(imageDist.rows * imageDist.cols == 0)
-				printf("failed to load image %s! skipping.\n", files[i].c_str());
-			else
-				printf("image %s has wrong dimensions - expecting %d x %d, found %d x %d. Skipping.\n",
-						files[i].c_str(),
-						w,h,imageDist.cols, imageDist.rows);
-			continue;
-		}
 		assert(imageDist.type() == CV_8U);
 
 		undistorter->undistort(imageDist, image);
