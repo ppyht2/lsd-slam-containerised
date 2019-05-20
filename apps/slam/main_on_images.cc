@@ -39,10 +39,6 @@
 #include "opencv2/opencv.hpp"
 
 
-const std::string dataset_root = "data/sequence_01/";
-const std::string fn = dataset_root + "camera.txt";
-const std::string source = dataset_root + "images/";
-
 // Gets current projection matrix (= PerspectiveMatrix * CameraPoseMatrix)
 template<typename Tracker>
 Eigen::Matrix<double, 3, 4> get_projection(Tracker& tracker) {
@@ -98,6 +94,14 @@ std::string &rtrim(std::string &s) {
 std::string &trim(std::string &s) {
         return ltrim(rtrim(s));
 }
+
+std::string append_slash_to_dirname(std::string dirname) {
+    if(dirname[dirname.length()-1] == '/') {
+        return dirname;
+    }
+    return dirname + "/";
+}
+
 int getdir (std::string dir, std::vector<std::string> &files)
 {
     DIR *dp;
@@ -117,13 +121,12 @@ int getdir (std::string dir, std::vector<std::string> &files)
 
 
     std::sort(files.begin(), files.end());
-
-    if(dir.at( dir.length() - 1 ) != '/') dir = dir+"/";
-	for(unsigned int i=0;i<files.size();i++)
-	{
-		if(files[i].at(0) != '/')
-			files[i] = dir + files[i];
-	}
+    dir = append_slash_to_dirname(dir);
+    for(unsigned int i=0;i<files.size();i++)
+    {
+        if(files[i].at(0) != '/')
+            files[i] = dir + files[i];
+    }
 
     return files.size();
 }
@@ -178,18 +181,15 @@ int main( int argc, char** argv )
 {
 	//ros::init(argc, argv, "LSD_SLAM");
 
-	//dynamic_reconfigure::Server<lsd_slam_core::LSDParamsConfig> srv(ros::NodeHandle("~"));
-	//srv.setCallback(dynConfCb);
+    if(argc < 2) {
+        std::cout << "Usage: $./bin/main_on_images data/sequence_${sequence_number}/" << std::endl;
+        exit(-1);
+    }
 
-	//dynamic_reconfigure::Server<lsd_slam_core::LSDDebugParamsConfig> srvDebug(ros::NodeHandle("~Debug"));
-	//srvDebug.setCallback(dynConfCbDebug);
-
-	// get camera calibration in form of an undistorter object.
-	// if no undistortion is required, the undistorter will just pass images through.
-	// std::string calibFile;
-	Undistorter* undistorter = 0;
-
-    undistorter = Undistorter::getUndistorterForFile(fn);
+    const std::string dataset_root = append_slash_to_dirname(std::string(argv[1]));
+    const std::string calib_file = dataset_root + "camera.txt";
+    const std::string source = dataset_root + "images/";
+    Undistorter* undistorter = 0;
 
 	if(undistorter == 0)
 	{

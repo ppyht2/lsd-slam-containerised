@@ -35,7 +35,7 @@ $./scripts/download_tum_mono.sh
 
 ### Run LSD-SLAM
 
-The debug window should appear by executing `$./bin/main_on_images`.
+The debug window should appear by executing `$./bin/main_on_images data/sequence_$SEQUENCE`.
 
 ## Related Papers
 
