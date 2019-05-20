@@ -112,10 +112,10 @@ int getdir (std::string dir, std::vector<std::string> &files)
     }
 
     while ((dirp = readdir(dp)) != NULL) {
-    	std::string name = std::string(dirp->d_name);
+        std::string name = std::string(dirp->d_name);
 
-    	if(name != "." && name != "..")
-    		files.push_back(name);
+        if(name != "." && name != "..")
+            files.push_back(name);
     }
     closedir(dp);
 
@@ -133,53 +133,52 @@ int getdir (std::string dir, std::vector<std::string> &files)
 
 int getFile (std::string source, std::vector<std::string> &files)
 {
-	std::ifstream f(source.c_str());
+    std::ifstream f(source.c_str());
 
-	if(f.good() && f.is_open())
-	{
-		while(!f.eof())
-		{
-			std::string l;
-			std::getline(f,l);
+    if(f.good() && f.is_open())
+    {
+        while(!f.eof())
+        {
+            std::string l;
+            std::getline(f,l);
 
-			l = trim(l);
+            l = trim(l);
 
-			if(l == "" || l[0] == '#')
-				continue;
+            if(l == "" || l[0] == '#')
+                continue;
 
-			files.push_back(l);
-		}
+            files.push_back(l);
+        }
 
-		f.close();
+        f.close();
 
-		size_t sp = source.find_last_of('/');
-		std::string prefix;
-		if(sp == std::string::npos)
-			prefix = "";
-		else
-			prefix = source.substr(0,sp);
+        size_t sp = source.find_last_of('/');
+        std::string prefix;
+        if(sp == std::string::npos)
+            prefix = "";
+        else
+            prefix = source.substr(0,sp);
 
-		for(unsigned int i=0;i<files.size();i++)
-		{
-			if(files[i].at(0) != '/')
-				files[i] = prefix + "/" + files[i];
-		}
+        for(unsigned int i=0;i<files.size();i++)
+        {
+            if(files[i].at(0) != '/')
+                files[i] = prefix + "/" + files[i];
+        }
 
-		return (int)files.size();
-	}
-	else
-	{
-		f.close();
-		return -1;
-	}
+        return (int)files.size();
+    }
+    else
+    {
+        f.close();
+        return -1;
+    }
 
 }
 
 
 using namespace lsd_slam;
-int main( int argc, char** argv )
+int main(int argc, char* argv[])
 {
-	//ros::init(argc, argv, "LSD_SLAM");
 
     if(argc < 2) {
         std::cout << "Usage: $./bin/main_on_images data/sequence_${sequence_number}/" << std::endl;
@@ -191,88 +190,90 @@ int main( int argc, char** argv )
     const std::string source = dataset_root + "images/";
     Undistorter* undistorter = 0;
 
-	if(undistorter == 0)
-	{
-		printf("need camera calibration file! (set using _calib:=FILE)\n");
-		exit(0);
-	}
+    undistorter = Undistorter::getUndistorterForFile(calib_file);
 
-	int w = undistorter->getOutputWidth();
-	int h = undistorter->getOutputHeight();
-	float fx = undistorter->getK().at<double>(0, 0);
-	float fy = undistorter->getK().at<double>(1, 1);
-	float cx = undistorter->getK().at<double>(2, 0);
-	float cy = undistorter->getK().at<double>(2, 1);
-	Sophus::Matrix3f K;
-	K << fx, 0.0, cx, 0.0, fy, cy, 0.0, 0.0, 1.0;
+    if(undistorter == 0)
+    {
+        printf("need camera calibration file! (set using _calib:=FILE)\n");
+        exit(0);
+    }
 
-
-	// make output wrapper. just set to zero if no output is required.
-	Output3DWrapper* outputWrapper = nullptr; // new ROSOutput3DWrapper(w,h);
+    int w = undistorter->getOutputWidth();
+    int h = undistorter->getOutputHeight();
+    float fx = undistorter->getK().at<double>(0, 0);
+    float fy = undistorter->getK().at<double>(1, 1);
+    float cx = undistorter->getK().at<double>(2, 0);
+    float cy = undistorter->getK().at<double>(2, 1);
+    Sophus::Matrix3f K;
+    K << fx, 0.0, cx, 0.0, fy, cy, 0.0, 0.0, 1.0;
 
 
-	// make slam system
-	SlamSystem* system = new SlamSystem(w, h, K, doSlam);
-	system->setVisualization(outputWrapper);
+    // make output wrapper. just set to zero if no output is required.
+    Output3DWrapper* outputWrapper = nullptr; // new ROSOutput3DWrapper(w,h);
+
+    // make slam system
+    SlamSystem* system = new SlamSystem(w, h, K, doSlam);
+    system->setVisualization(outputWrapper);
 
     std::vector<std::string> files;
-	if(getdir(source, files) >= 0) {
-		printf("found %d image files in folder %s!\n", (int)files.size(), source.c_str());
-	} else {
-        throw std::runtime_error("Could not read the image directory");
+    if(getdir(source, files) >= 0) {
+        printf("found %d image files in folder %s!\n", (int)files.size(), source.c_str());
+    } else {
+        std::cerr << "Could not read the image directory" << std::endl;
+        exit(-1);
     }
 
 
-	cv::Mat image = cv::Mat(h,w,CV_8U);
-	int runningIDX=0;
-	float fakeTimeStamp = 0;
+    cv::Mat image = cv::Mat(h,w,CV_8U);
+    int runningIDX=0;
+    float fakeTimeStamp = 0;
 
-	//ros::Rate r(hz);
+    //ros::Rate r(hz);
 
-	for(unsigned int i=0;i<files.size();i++)
-	{
+    for(unsigned int i=0;i<files.size();i++)
+    {
         std::cout << "reading " << files[i] << std::endl;
 
-		cv::Mat imageDist = cv::imread(files[i], CV_LOAD_IMAGE_GRAYSCALE);
+        cv::Mat imageDist = cv::imread(files[i], CV_LOAD_IMAGE_GRAYSCALE);
 
-		assert(imageDist.type() == CV_8U);
+        assert(imageDist.type() == CV_8U);
 
-		undistorter->undistort(imageDist, image);
-		assert(image.type() == CV_8U);
+        undistorter->undistort(imageDist, image);
+        assert(image.type() == CV_8U);
 
-		if(runningIDX == 0)
-			system->randomInit(image.data, fakeTimeStamp, runningIDX);
-		else
-			system->trackFrame(image.data, runningIDX , false,fakeTimeStamp);
-		runningIDX++;
-		fakeTimeStamp+=0.03;
+        if(runningIDX == 0)
+            system->randomInit(image.data, fakeTimeStamp, runningIDX);
+        else
+            system->trackFrame(image.data, runningIDX , false,fakeTimeStamp);
+        runningIDX++;
+        fakeTimeStamp+=0.03;
 
-		//if(hz != 0)
-		//	r.sleep();
+        //if(hz != 0)
+        //    r.sleep();
 
-		if(fullResetRequested)
-		{
+        if(fullResetRequested)
+        {
 
-			printf("FULL RESET!\n");
-			delete system;
+            printf("FULL RESET!\n");
+            delete system;
 
-			system = new SlamSystem(w, h, K, doSlam);
-			system->setVisualization(outputWrapper);
+            system = new SlamSystem(w, h, K, doSlam);
+            system->setVisualization(outputWrapper);
 
-			fullResetRequested = false;
-			runningIDX = 0;
-		}
+            fullResetRequested = false;
+            runningIDX = 0;
+        }
 
-		//ros::spinOnce();
-	}
-
-
-	system->finalize();
+        //ros::spinOnce();
+    }
 
 
+    system->finalize();
 
-	delete system;
-	delete undistorter;
-	delete outputWrapper;
-	return 0;
+
+
+    delete system;
+    delete undistorter;
+    delete outputWrapper;
+    return 0;
 }
