@@ -6,7 +6,7 @@ semi-dense maps in real-time on a laptop. For more information see
 where you can also find the corresponding publications and Youtube videos, as well as some 
 example-input datasets, and the generated output as rosbag or .ply point cloud.
 
-## How to build
+## How to run
 
 We highly recommend to use docker to build the source, because it is very difficult to reproduce the execution environment on a general Linux distributions such as Ubuntu etc.
 
