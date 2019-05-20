@@ -74,3 +74,4 @@ RUN git clone https://github.com/IshitaTakeshi/lsd_slam_noros.git \
     && cmake .. \
     && make
 
+WORKDIR $WORKSPACE/lsd_slam_noros
