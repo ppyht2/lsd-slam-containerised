@@ -39,7 +39,7 @@
 #include "opencv2/opencv.hpp"
 
 
-const std::string dataset_root = "/workspace/lsd_slam_noros/data/sequence_01/";
+const std::string dataset_root = "data/sequence_01/";
 const std::string fn = dataset_root + "camera.txt";
 const std::string source = dataset_root + "images/";
 
