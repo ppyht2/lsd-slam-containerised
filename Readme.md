@@ -10,10 +10,11 @@ example-input datasets, and the generated output as rosbag or .ply point cloud.
 
 We highly recommend to use docker to build the source, because it is very difficult to reproduce the execution environment on a general Linux distributions such as Ubuntu etc.
 
-### Get the Dockerfile 
+### Clone the repository 
 
 ```
-$wget https://raw.githubusercontent.com/IshitaTakeshi/lsd_slam_noros/master/Dockerfile
+$git clone https://github.com/IshitaTakeshi/lsd_slam_noros.git
+$cd lsd_slam_noros
 ```
 
 ### Building a docker image
