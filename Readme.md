@@ -29,7 +29,8 @@ $docker build -t lsdslam_noros:latest .
 
 This part is usually environment dependent because we need to share a window with the host.
 
-On Mac, make sure the latest [XQuartz](https://www.xquartz.org) is installed, and run `$./scripts/launch-container-mac.sh`.
+If you are on Mac, make sure the latest [XQuartz](https://www.xquartz.org) is installed, and run `$./scripts/launch-container-mac.sh`.  
+On Linux, run `$./scripts/launch-container-linux.sh`.
 
 ### Download the dataset
 
