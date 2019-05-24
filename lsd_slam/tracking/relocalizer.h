@@ -2,7 +2,7 @@
 * This file is part of LSD-SLAM.
 *
 * Copyright 2013 Jakob Engel <engelj at in dot tum dot de> (Technical University of Munich)
-* For more information see <http://vision.in.tum.de/lsdslam> 
+* For more information see <http://vision.in.tum.de/lsdslam>
 *
 * LSD-SLAM is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -35,44 +35,45 @@ class Sim3Tracker;
 class Relocalizer
 {
 public:
-	Relocalizer(int w, int h, Eigen::Matrix3f K);
-	~Relocalizer();
+    Relocalizer(int w, int h, Eigen::Matrix3f K);
+    ~Relocalizer();
 
-	void updateCurrentFrame(std::shared_ptr<Frame> currentFrame);
-	void start(std::vector<Frame*> &allKeyframesList);
-	void stop();
+    void updateCurrentFrame(std::shared_ptr<Frame> currentFrame);
+    void start(std::vector<Frame*> &allKeyframesList);
+    void stop();
 
-	bool waitResult(int milliseconds);
-	void getResult(Frame* &out_keyframe, std::shared_ptr<Frame> &frame, int &out_successfulFrameID, SE3 &out_frameToKeyframe);
+    bool waitResult(int milliseconds);
+    void getResult(Frame* &out_keyframe, std::shared_ptr<Frame> &frame,
+                   int &out_successfulFrameID, SE3 &out_frameToKeyframe);
 
-	bool isRunning;
+    bool isRunning;
 private:
-	int w, h;
-	Eigen::Matrix3f K;
-	boost::thread relocThreads[RELOCALIZE_THREADS];
-	bool running[RELOCALIZE_THREADS];
+    int w, h;
+    Eigen::Matrix3f K;
+    boost::thread relocThreads[RELOCALIZE_THREADS];
+    bool running[RELOCALIZE_THREADS];
 
-	// locking & signalling structures
-	boost::mutex exMutex;
-	boost::condition_variable newCurrentFrameSignal;
-	boost::condition_variable resultReadySignal;
+    // locking & signalling structures
+    boost::mutex exMutex;
+    boost::condition_variable newCurrentFrameSignal;
+    boost::condition_variable resultReadySignal;
 
-	// for rapid-checking
-	std::vector<Frame*> KFForReloc;
-	std::shared_ptr<Frame> CurrentRelocFrame;
-	int nextRelocIDX;
-	int maxRelocIDX;
-	bool continueRunning;
+    // for rapid-checking
+    std::vector<Frame*> KFForReloc;
+    std::shared_ptr<Frame> CurrentRelocFrame;
+    int nextRelocIDX;
+    int maxRelocIDX;
+    bool continueRunning;
 
-	// result!
-	std::shared_ptr<Frame> resultRelocFrame;
-	bool hasResult;
-	Frame* resultKF;
-	int resultFrameID;
-	SE3 resultFrameToKeyframe;
+    // result!
+    std::shared_ptr<Frame> resultRelocFrame;
+    bool hasResult;
+    Frame* resultKF;
+    int resultFrameID;
+    SE3 resultFrameToKeyframe;
 
 
-	void threadLoop(int idx);
+    void threadLoop(int idx);
 };
 
 }

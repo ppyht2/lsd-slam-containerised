@@ -52,8 +52,8 @@ Eigen::Matrix<double, 3, 4> get_projection(Tracker& tracker) {
     std::vector<double> rot = tracker.GetCurrentPose();
     Eigen::Matrix<double, 3, 3> mrot;
     mrot << rot[0], rot[1], rot[2],
-            rot[3], rot[4], rot[5],
-            rot[6], rot[7], rot[8];
+         rot[3], rot[4], rot[5],
+         rot[6], rot[7], rot[8];
     Eigen::Matrix<double, 3, 4> pose;
     pose.setZero();
     pose.block<3, 3>(0, 0) = mrot;
@@ -84,15 +84,17 @@ void draw_target(cv::Mat& rgb_img, Tracker& tracker) {
 
 
 std::string &ltrim(std::string &s) {
-        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-        return s;
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+                                    std::not1(std::ptr_fun<int, int>(std::isspace))));
+    return s;
 }
 std::string &rtrim(std::string &s) {
-        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
-        return s;
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+                         std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+    return s;
 }
 std::string &trim(std::string &s) {
-        return ltrim(rtrim(s));
+    return ltrim(rtrim(s));
 }
 
 std::string append_slash_to_dirname(std::string dirname) {
@@ -122,7 +124,7 @@ int getdir (std::string dir, std::vector<std::string> &files)
 
     std::sort(files.begin(), files.end());
     dir = append_slash_to_dirname(dir);
-    for(unsigned int i=0;i<files.size();i++)
+    for(unsigned int i=0; i<files.size(); i++)
     {
         if(files[i].at(0) != '/')
             files[i] = dir + files[i];
@@ -159,7 +161,7 @@ int getFile (std::string source, std::vector<std::string> &files)
         else
             prefix = source.substr(0,sp);
 
-        for(unsigned int i=0;i<files.size();i++)
+        for(unsigned int i=0; i<files.size(); i++)
         {
             if(files[i].at(0) != '/')
                 files[i] = prefix + "/" + files[i];
@@ -181,7 +183,8 @@ int main(int argc, char* argv[])
 {
 
     if(argc < 2) {
-        std::cout << "Usage: $./bin/main_on_images data/sequence_${sequence_number}/" << std::endl;
+        std::cout << "Usage: $./bin/main_on_images data/sequence_${sequence_number}/"
+                  << std::endl;
         exit(-1);
     }
 
@@ -217,7 +220,8 @@ int main(int argc, char* argv[])
 
     std::vector<std::string> files;
     if(getdir(source, files) >= 0) {
-        printf("found %d image files in folder %s!\n", (int)files.size(), source.c_str());
+        printf("found %d image files in folder %s!\n", (int)files.size(),
+               source.c_str());
     } else {
         std::cerr << "Could not read the image directory" << std::endl;
         exit(-1);
@@ -230,7 +234,7 @@ int main(int argc, char* argv[])
 
     //ros::Rate r(hz);
 
-    for(unsigned int i=0;i<files.size();i++)
+    for(unsigned int i=0; i<files.size(); i++)
     {
         std::cout << "reading " << files[i] << std::endl;
 
@@ -244,7 +248,7 @@ int main(int argc, char* argv[])
         if(runningIDX == 0)
             system->randomInit(image.data, fakeTimeStamp, runningIDX);
         else
-            system->trackFrame(image.data, runningIDX , false,fakeTimeStamp);
+            system->trackFrame(image.data, runningIDX, false,fakeTimeStamp);
         runningIDX++;
         fakeTimeStamp+=0.03;
 

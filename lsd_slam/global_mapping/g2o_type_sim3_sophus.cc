@@ -2,7 +2,7 @@
 * This file is part of LSD-SLAM.
 *
 * Copyright 2013 Jakob Engel <engelj at in dot tum dot de> (Technical University of Munich)
-* For more information see <http://vision.in.tum.de/lsdslam> 
+* For more information see <http://vision.in.tum.de/lsdslam>
 *
 * LSD-SLAM is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -36,15 +36,15 @@ namespace lsd_slam
 
 VertexSim3::VertexSim3() : g2o::BaseVertex<7, Sophus::Sim3d>()
 {
-	_marginalized=false;
-	_fix_scale = false;
+    _marginalized=false;
+    _fix_scale = false;
 }
 
 bool VertexSim3::write(std::ostream& os) const
 {
-	// TODO
-	assert(false);
-	return false;
+    // TODO
+    assert(false);
+    return false;
 //     Sim3 cam2world(estimate().inverse());
 //     Vector7d lv=cam2world.log();
 //     for (int i=0; i<7; i++){
@@ -63,9 +63,9 @@ bool VertexSim3::write(std::ostream& os) const
 
 bool VertexSim3::read(std::istream& is)
 {
-	// TODO
-	assert(false);
-	return false;
+    // TODO
+    assert(false);
+    return false;
 //     Vector7d cam2world;
 //     for (int i=0; i<6; i++){
 //       is >> cam2world[i];
@@ -76,7 +76,7 @@ bool VertexSim3::read(std::istream& is)
 // //      std::cerr << "!s";
 // //      cam2world[6]=0.;
 // //    }
-// 
+//
 //     for (int i=0; i<2; i++)
 //     {
 //       is >> _focal_length[i];
@@ -85,22 +85,22 @@ bool VertexSim3::read(std::istream& is)
 //     {
 //       is >> _principle_point[i];
 //     }
-// 
+//
 //     setEstimate(Sim3(cam2world).inverse());
 //     return true;
 }
 
 
 EdgeSim3::EdgeSim3() :
-	g2o::BaseBinaryEdge<7, Sophus::Sim3d, VertexSim3, VertexSim3>()
+    g2o::BaseBinaryEdge<7, Sophus::Sim3d, VertexSim3, VertexSim3>()
 {
 }
 
 bool EdgeSim3::write(std::ostream& os) const
 {
-	// TODO
-	assert(false);
-	return false;
+    // TODO
+    assert(false);
+    return false;
 //     Sim3 cam2world(measurement().inverse());
 //     Vector7d v7 = cam2world.log();
 //     for (int i=0; i<7; i++)
@@ -116,17 +116,17 @@ bool EdgeSim3::write(std::ostream& os) const
 
 bool EdgeSim3::read(std::istream& is)
 {
-	// TODO
-	assert(false);
-	return false;
+    // TODO
+    assert(false);
+    return false;
 //     Vector7d v7;
 //     for (int i=0; i<7; i++){
 //       is >> v7[i];
 //     }
-// 
+//
 //     Sim3 cam2world(v7);
 //     setMeasurement(cam2world.inverse());
-// 
+//
 //     for (int i=0; i<7; i++)
 //       for (int j=i; j<7; j++)
 //       {
