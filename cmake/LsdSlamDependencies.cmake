@@ -33,7 +33,7 @@ lsd_slam_print_status("OpenCV libs:${OpenCV_LIBRARIES}")
 find_package(G2O REQUIRED)
 set(G2O_BINARY_DIR ${G2O_ROOT}/bin)
 
-set(G2O_LIBRARIES optimized ${G2O_CORE_LIBRARY} debug ${G2O_CORE_LIBRARY_DEBUG} 
+set(G2O_LIBRARIES optimized ${G2O_CORE_LIBRARY} debug ${G2O_CORE_LIBRARY_DEBUG}
                   optimized ${G2O_STUFF_LIBRARY} debug ${G2O_STUFF_LIBRARY_DEBUG}
                   optimized ${G2O_SOLVER_DENSE} debug ${G2O_SOLVER_DENSE_DEBUG}
                   optimized ${G2O_TYPES_SLAM3D} debug ${G2O_TYPES_SLAM3D_DEBUG}
@@ -71,6 +71,13 @@ cull_library_paths(G2O_LIBRARIES)
 list(APPEND LsdSlam_EXTERNAL_LIBS ${G2O_LIBRARIES})
 
 ##==============================================================================
+# Eigen
+find_path(EIGEN3_INCLUDE_DIR NAMES signature_of_eigen3_matrix_library
+          PATHS include
+          PATH_SUFFIXES eigen3 include/eigen3)
+
+include_directories(${EIGEN3_INCLUDE_DIR})
+
 # OpenGL
 find_package(OpenGL)
 lsd_slam_print_status("Found OpenGL ? ${OPENGL_FOUND}")
