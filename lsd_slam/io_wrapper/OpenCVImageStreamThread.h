@@ -2,7 +2,7 @@
 * This file is part of LSD-SLAM.
 *
 * Copyright 2013 Jakob Engel <engelj at in dot tum dot de> (Technical University of Munich)
-* For more information see <http://vision.in.tum.de/lsdslam> 
+* For more information see <http://vision.in.tum.de/lsdslam>
 *
 * LSD-SLAM is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -45,39 +45,39 @@ namespace lsd_slam
 class OpenCVImageStreamThread : public InputImageStream
 {
 public:
-	OpenCVImageStreamThread();
-	~OpenCVImageStreamThread();
-	
-	/**
-	 * Starts the thread.
-	 */
-	void run();
-	
-	void setCalibration(std::string file);
+    OpenCVImageStreamThread();
+    ~OpenCVImageStreamThread();
 
-	void setCameraCapture(CvCapture* cap);
-	/**
-	 * Thread main function.
-	 */
-	void operator()();
-	
-	// get called on ros-message callbacks
-	//void vidCb(const sensor_msgs::ImageConstPtr img);
-	//void infoCb(const sensor_msgs::CameraInfoConstPtr info);
+    /**
+     * Starts the thread.
+     */
+    void run();
+
+    void setCalibration(std::string file);
+
+    void setCameraCapture(CvCapture* cap);
+    /**
+     * Thread main function.
+     */
+    void operator()();
+
+    // get called on ros-message callbacks
+    //void vidCb(const sensor_msgs::ImageConstPtr img);
+    //void infoCb(const sensor_msgs::CameraInfoConstPtr info);
 
 private:
 
-	bool haveCalib;
-	Undistorter* undistorter;
+    bool haveCalib;
+    Undistorter* undistorter;
 
-	//ros::NodeHandle nh_;
+    //ros::NodeHandle nh_;
 
-	//std::string vid_channel;
-	//ros::Subscriber vid_sub;
+    //std::string vid_channel;
+    //ros::Subscriber vid_sub;
 
-	int lastSEQ;
+    int lastSEQ;
 
-	CvCapture* capture;
+    CvCapture* capture;
 };
 
 }

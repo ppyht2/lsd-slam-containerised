@@ -2,7 +2,7 @@
 * This file is part of LSD-SLAM.
 *
 * Copyright 2013 Jakob Engel <engelj at in dot tum dot de> (Technical University of Munich)
-* For more information see <http://vision.in.tum.de/lsdslam> 
+* For more information see <http://vision.in.tum.de/lsdslam>
 *
 * LSD-SLAM is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -119,43 +119,52 @@ std::string packagePath = "";
 
 void handleKey(char k)
 {
-	char kkk = k;
-	switch(kkk)
-	{
-	case 'a': case 'A':
+    char kkk = k;
+    switch(kkk)
+    {
+    case 'a':
+    case 'A':
 //		autoRun = !autoRun;		// disabled... only use for debugging & if you really, really know what you are doing
-		break;
-	case 's': case 'S':
+        break;
+    case 's':
+    case 'S':
 //		autoRunWithinFrame = !autoRunWithinFrame; 	// disabled... only use for debugging & if you really, really know what you are doing
-		break;
-	case 'd': case 'D':
-		debugDisplay = (debugDisplay+1)%6;
-		printf("debugDisplay is now: %d\n", debugDisplay);
-		break;
-	case 'e': case 'E':
-		debugDisplay = (debugDisplay-1+6)%6;
-		printf("debugDisplay is now: %d\n", debugDisplay);
-		break;
-	case 'o': case 'O':
-		onSceenInfoDisplay = !onSceenInfoDisplay;
-		break;
-	case 'r': case 'R':
-		printf("requested full reset!\n");
-		fullResetRequested = true;
-		break;
-	case 'm': case 'M':
-		printf("Dumping Map!\n");
-		dumpMap = true;
-		break;
-	case 'p': case 'P':
-		printf("Tracking all Map-Frames again!\n");
-		doFullReConstraintTrack = true;
-		break;
-	case 'l': case 'L':
-		printf("Manual Tracking Loss Indicated!\n");
-		manualTrackingLossIndicated = true;
-		break;
-	}
+        break;
+    case 'd':
+    case 'D':
+        debugDisplay = (debugDisplay+1)%6;
+        printf("debugDisplay is now: %d\n", debugDisplay);
+        break;
+    case 'e':
+    case 'E':
+        debugDisplay = (debugDisplay-1+6)%6;
+        printf("debugDisplay is now: %d\n", debugDisplay);
+        break;
+    case 'o':
+    case 'O':
+        onSceenInfoDisplay = !onSceenInfoDisplay;
+        break;
+    case 'r':
+    case 'R':
+        printf("requested full reset!\n");
+        fullResetRequested = true;
+        break;
+    case 'm':
+    case 'M':
+        printf("Dumping Map!\n");
+        dumpMap = true;
+        break;
+    case 'p':
+    case 'P':
+        printf("Tracking all Map-Frames again!\n");
+        doFullReConstraintTrack = true;
+        break;
+    case 'l':
+    case 'L':
+        printf("Manual Tracking Loss Indicated!\n");
+        manualTrackingLossIndicated = true;
+        break;
+    }
 
 }
 

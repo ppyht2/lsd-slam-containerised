@@ -2,7 +2,7 @@
 * This file is part of LSD-SLAM.
 *
 * Copyright 2013 Jakob Engel <engelj at in dot tum dot de> (Technical University of Munich)
-* For more information see <http://vision.in.tum.de/lsdslam> 
+* For more information see <http://vision.in.tum.de/lsdslam>
 *
 * LSD-SLAM is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -36,35 +36,49 @@ namespace lsd_slam
 class InputImageStream
 {
 public:
-	virtual ~InputImageStream() {};
-	
-	/**
-	 * Starts the thread.
-	 */
-	virtual void run() {};
+    virtual ~InputImageStream() {};
+
+    /**
+     * Starts the thread.
+     */
+    virtual void run() {};
 
 
-	virtual void setCalibration(std::string file) {};
+    virtual void setCalibration(std::string file) {};
 
-	/**
-	 * Gets the NotifyBuffer to which incoming images are stored.
-	 */
-	inline NotifyBuffer<TimestampedMat>* getBuffer() {return imageBuffer;};
+    /**
+     * Gets the NotifyBuffer to which incoming images are stored.
+     */
+    inline NotifyBuffer<TimestampedMat>* getBuffer() {
+        return imageBuffer;
+    };
 
 
-	/**
-	 * Gets the Camera Calibration. To avoid any dependencies, just as simple float / int's.
-	 */
-	inline float fx() {return fx_;}
-	inline float fy() {return fy_;}
-	inline float cx() {return cx_;}
-	inline float cy() {return cy_;}
-	inline int width() {return width_;}
-	inline int height() {return height_;}
+    /**
+     * Gets the Camera Calibration. To avoid any dependencies, just as simple float / int's.
+     */
+    inline float fx() {
+        return fx_;
+    }
+    inline float fy() {
+        return fy_;
+    }
+    inline float cx() {
+        return cx_;
+    }
+    inline float cy() {
+        return cy_;
+    }
+    inline int width() {
+        return width_;
+    }
+    inline int height() {
+        return height_;
+    }
 
 protected:
-	NotifyBuffer<TimestampedMat>* imageBuffer;
-	float fx_, fy_, cx_, cy_;
-	int width_, height_;
+    NotifyBuffer<TimestampedMat>* imageBuffer;
+    float fx_, fy_, cx_, cy_;
+    int width_, height_;
 };
 }
