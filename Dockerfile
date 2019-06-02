@@ -50,7 +50,9 @@ RUN wget -c https://bitbucket.org/eigen/eigen/get/3.2.1.tar.gz \
 
 WORKDIR $WORKSPACE
 
+RUN apt-get update
 RUN apt-get -y install git libsuitesparse-dev
+
 RUN git clone https://github.com/RainerKuemmerle/g2o.git \
     && cd g2o \
     && git checkout 67d5fa7 \
@@ -65,6 +67,7 @@ RUN git clone https://github.com/RainerKuemmerle/g2o.git \
 
 WORKDIR $WORKSPACE
 
+RUN apt-get update
 RUN apt-get -y install libboost-all-dev freeglut3-dev libglew-dev
 
 # build in a single process since it seems parallel build doesn't contribute to the speed
