@@ -45,6 +45,8 @@ $./scripts/download_tum_mono.sh
 
 The debug window should appear by executing `$./bin/main_on_images data/sequence_$SEQUENCE`.
 
+If segmentation fault or Gtk-WARNIG happens, executing the command above multiple times may solve it.
+
 ## Related Papers
 
 * **LSD-SLAM: Large-Scale Direct Monocular SLAM**, *J. Engel, T. Schöps, D. Cremers*, ECCV '14
