@@ -8,7 +8,7 @@ example-input datasets, and the generated output as rosbag or .ply point cloud.
 
 ## How to run
 
-We highly recommend to use docker to build the source, because it is very difficult to reproduce the execution environment on a general Linux distributions such as Ubuntu etc.
+We highly recommend to use docker to build the source, because it is very difficult to reproduce the execution environment on general Linux distributions such as Ubuntu etc.
 
 ### Clone the repository 
 
