@@ -71,7 +71,7 @@ RUN apt-get update
 RUN apt-get -y install libboost-all-dev freeglut3-dev libglew-dev
 
 # build in a single process since it seems parallel build doesn't contribute to the speed
-RUN git clone https://github.com/ppyht2/lsd-slam-containerised \
+RUN git clone https://github.com/ppyht2/lsd-slam-containerised.git \
     && cd lsd_slam_noros/ \
     && mkdir build \
     && cd build/ \
