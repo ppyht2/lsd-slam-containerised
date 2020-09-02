@@ -34,16 +34,16 @@ RUN wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.tar.gz \
 
 WORKDIR $WORKSPACE
 
-RUN wget -c https://bitbucket.org/eigen/eigen/get/3.2.1.tar.gz \
-    && tar xvf 3.2.1.tar.gz \
-    && cd eigen-eigen-6b38706d90a9 \
+RUN wget https://gitlab.com/libeigen/eigen/-/archive/3.2.1/eigen-3.2.1.tar.gz \
+    && tar xvf eigen-3.2.1.tar.gz \
+    && cd eigen-3.2.1 \
     && mkdir build \
     && cd build \
     && cmake .. \
     && make install \
     && cd ../../ \
-    && rm 3.2.1.tar.gz \
-    && rm -r eigen-eigen-6b38706d90a9
+    && rm eigen-3.2.1.tar.gz \
+    && rm -r eigen-3.2.1
 
 
 # install g2o
@@ -71,7 +71,7 @@ RUN apt-get update
 RUN apt-get -y install libboost-all-dev freeglut3-dev libglew-dev
 
 # build in a single process since it seems parallel build doesn't contribute to the speed
-RUN git clone https://github.com/IshitaTakeshi/lsd_slam_noros.git \
+RUN git clone https://github.com/ppyht2/lsd-slam-containerised.git \
     && cd lsd_slam_noros/ \
     && mkdir build \
     && cd build/ \
