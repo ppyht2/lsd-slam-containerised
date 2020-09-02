@@ -16,12 +16,6 @@ I plan to provide the docker image in the future, but for now you will have to b
 
 ## Instructions
 
-### Clone the repository 
-
-```
-$git clone https://github.com/ppyht2/lsd-slam-containerised
-$cd lsd_slam_noros
-```
 
 ### Building a docker image
 
